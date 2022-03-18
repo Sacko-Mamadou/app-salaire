@@ -1,0 +1,12 @@
+nœud{
+    stage('Clone git') {
+ caisse scm
+    }
+ étape('Ansible') {
+      ansiblePlaybook (
+          colorisé: vrai, 
+          playbook: 'playbook.yaml',
+          inventaire: 'hosts.yaml'
+      )
+    }
+}
