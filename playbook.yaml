@@ -1,0 +1,39 @@
+---
+
+- hôtes: 10.0.0.210
+
+  tâches:
+  - nom: Installation du serveur Apache et PHP
+    miam :
+     nom: « {{ item }} »
+     état: présent
+    boucle :
+      - httpd (en anglais)
+      - php
+      - nano
+      - mariadb-serveur
+
+  - nom: Arret du service nginx
+    systemd:
+     nom: nginx
+     état: arrêté
+
+  - nom: Démarrage du serveur apache
+    systemd:
+     nom: « {{ item }} »
+     état: démarré
+    boucle :
+      - httpd (en anglais)
+      - mariadb
+
+  - nom: SUppression du fichier index.html
+    fichier :
+     chemin d’accès : /var/www/html/index.html
+     état: absent
+  - nom: Copie des fichoers php
+    copie :
+     src: « {{ item }} »
+     dest: /var/www/html/
+    boucle :
+     - index.php
+     - create_db.php
